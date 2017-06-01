@@ -6,6 +6,7 @@
  */
 
 #include <io.h>
+#include <delay.h>
 #include <interrupt.h>
 
 #define F_CPU 8000000L
@@ -14,11 +15,11 @@
 //----------------------------------------
 
 void segChar (int seg);
-
 //----------------------------------------
+
 volatile int timerVar = 0;
 
-
+//----------------------------------------
 void timer_init (void)
 {
     // Устанавливаем режим СТС (сброс таймера по совпадению)
