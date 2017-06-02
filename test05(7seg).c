@@ -12,7 +12,6 @@
 #define DELEYTIME 50
 
 //----------------------------------------
-
 void segChar (int seg);
 void ledPrint (unsigned int number);
 
@@ -21,6 +20,7 @@ volatile unsigned int timerVar = 60;
 unsigned int r1, r2;
 unsigned short n_count = 0;
 
+//----------------------------------------
 
 void timer_init (void)
 {
@@ -42,6 +42,7 @@ void timer_init (void)
     //TCCR1B |= (1 << CS10);
     //TCCR1B |= (1 << CS11);
 }
+
 //----------------------------------------
 interrupt [TIM1_COMPA] void isr_TIM1_COMPA (void)
 {
@@ -53,6 +54,7 @@ interrupt [TIM1_COMPA] void isr_TIM1_COMPA (void)
     else
         --timerVar;
 }
+
 //----------------------------------------
 interrupt [TIM0_OVF] void tim0_interrupt (void)
 {
@@ -130,44 +132,45 @@ void main(void)
 //        }
     }
 }
-//----------------------------------------
 
+//----------------------------------------
 /* Вывод символов на 7seg дисплей */
 void segChar (int seg)
 {
     switch (seg) {
         case 1:
-            PORTD = ~0b00000110;
+            PORTD = ~0b00000110;    // "1"
             break;
         case 2:
-            PORTD = ~0b01011011;
+            PORTD = ~0b01011011;    // "2"
             break;
         case 3:
-            PORTD = ~0b01001111;
+            PORTD = ~0b01001111;    // "3"
             break;
         case 4:
-            PORTD = ~0b01100110;
+            PORTD = ~0b01100110;    // "4"
             break;
         case 5:
-            PORTD = ~0b01101101;
+            PORTD = ~0b01101101;    // "5"
             break;
         case 6:
-            PORTD = ~0b01111101;
+            PORTD = ~0b01111101;    // "6"
             break;
         case 7:
-            PORTD = ~0b00000111;
+            PORTD = ~0b00000111;    // "7"
             break;
         case 8:
-            PORTD = ~0b01111111;
+            PORTD = ~0b01111111;    // "8"
             break;
         case 9:
-            PORTD = ~0b01101111;
+            PORTD = ~0b01101111;    // "9"
             break;
         case 0:
-            PORTD = ~0b00111111;
+            PORTD = ~0b00111111;    // "0"
             break;
         };
 }
+
 //----------------------------------------
 void ledPrint (unsigned int number)
 {
