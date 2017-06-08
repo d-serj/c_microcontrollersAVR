@@ -8,15 +8,16 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#define F_CPU 8000000L
 #define DELEYTIME 50
 #define POINT 10
+#define TIMER1_STOP TCCR1B &= ~(1 << CS12)
+#define TIMER1_START TCCR1B |= (1 << CS12)
 
 
 //----------------------------------------
 void timer_init(void);
 void segChar (uint8_t seg);
-void ledPrint (uint8_t minutes, uint8_t seconds);
+void ledPrint (uint8_t, uint8_t);
 
 //----------------------------------------
 volatile uint8_t timerMinutes = 60;
@@ -35,50 +36,35 @@ void main(void)
     timer_init();
     // DDRD порты на "ВЫХОД"
     DDRD = 0xFF;
+    PORTD = 0b11111111;
     // DDRB порты на "ВХОД"
     DDRB = 0b00001111;
-    PORTD = 0b01111111;
     // Включение подтягивающего резистора на пине B5
-    PORTB = 0b00100000;
+    PORTB = 0b00010000;
     // Разрешим прерывания
+    sei();
 
     while (1)
     {
-        for (i = 0; i < 10 ; ++i)
-        {
-            while (buttState == 0)
+		// Антидребезг
+		while (buttState == 0)
+		{
+			if (!(PINB&0b00010000))
 			{
-                // Антидребезг
-                if (!(PINB&0b10000000))
-                {
-                    if (buttCount < 10)
-                    {
-                        ++buttCount;
-                    }
-                    else
-                    {
-                        i = 0;
-                        buttState = 0;
-                    }
-				}
+				buttState = 1;
+				TIMER1_STOP;
+			}
 
-                else
-                {
-                    if (buttCount > 0)
-                        --buttCount;
-                    else
-                    {
-                        buttState = 1;
-                        cli();
-                    }
+			else
+			{
+				buttState = 0;
+				TIMER1_START;
+			}
 
-                }
-            }
+		}
 
-            sei();
-            buttState = 0;
-        }
     }
+
 }
 
 //----------------------------------------
@@ -100,7 +86,7 @@ void timer_init (void)
     OCR1AH = 0b00111101;
     OCR1AL = 0b00001001;
     // Установим делитель /256
-    TCCR1B |= (1 << CS12);
+    //TCCR1B |= (1 << CS12);
     //TCCR1B |= (1 << CS10);
     //TCCR1B |= (1 << CS11);
 }
@@ -146,6 +132,7 @@ ISR(TIMER0_OVF_vect)
         PORTB = 0b00000010;
         segChar(r2);
 
+        // Если сейчас пол секунды мигаем точкой
         if (halfsecond == 1)
             segChar(POINT);
     }
