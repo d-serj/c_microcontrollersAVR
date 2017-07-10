@@ -1,0 +1,1451 @@
+
+bin\Debug\atmega8.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000083a  00000000  00000000  000000b4  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000002  00800060  0000083a  000008ee  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000020  00800062  00800062  000008f0  2**0
+                  ALLOC
+  3 .fuse         00000002  00820000  00820000  000008f0  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  4 .debug_aranges 00000040  00000000  00000000  000008f2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_pubnames 0000013b  00000000  00000000  00000932  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   000004e5  00000000  00000000  00000a6d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 00000249  00000000  00000000  00000f52  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   0000067b  00000000  00000000  0000119b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  000000e0  00000000  00000000  00001818  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    000001cf  00000000  00000000  000018f8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	2c c0       	rjmp	.+88     	; 0x5c <__bad_interrupt>
+   4:	2b c0       	rjmp	.+86     	; 0x5c <__bad_interrupt>
+   6:	2a c0       	rjmp	.+84     	; 0x5c <__bad_interrupt>
+   8:	29 c0       	rjmp	.+82     	; 0x5c <__bad_interrupt>
+   a:	28 c0       	rjmp	.+80     	; 0x5c <__bad_interrupt>
+   c:	9c c2       	rjmp	.+1336   	; 0x546 <__vector_6>
+   e:	26 c0       	rjmp	.+76     	; 0x5c <__bad_interrupt>
+  10:	25 c0       	rjmp	.+74     	; 0x5c <__bad_interrupt>
+  12:	d2 c2       	rjmp	.+1444   	; 0x5b8 <__vector_9>
+  14:	23 c0       	rjmp	.+70     	; 0x5c <__bad_interrupt>
+  16:	22 c0       	rjmp	.+68     	; 0x5c <__bad_interrupt>
+  18:	21 c0       	rjmp	.+66     	; 0x5c <__bad_interrupt>
+  1a:	20 c0       	rjmp	.+64     	; 0x5c <__bad_interrupt>
+  1c:	1f c0       	rjmp	.+62     	; 0x5c <__bad_interrupt>
+  1e:	1e c0       	rjmp	.+60     	; 0x5c <__bad_interrupt>
+  20:	1d c0       	rjmp	.+58     	; 0x5c <__bad_interrupt>
+  22:	1c c0       	rjmp	.+56     	; 0x5c <__bad_interrupt>
+  24:	1b c0       	rjmp	.+54     	; 0x5c <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+
+00000032 <__do_copy_data>:
+  32:	10 e0       	ldi	r17, 0x00	; 0
+  34:	a0 e6       	ldi	r26, 0x60	; 96
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	ea e3       	ldi	r30, 0x3A	; 58
+  3a:	f8 e0       	ldi	r31, 0x08	; 8
+  3c:	02 c0       	rjmp	.+4      	; 0x42 <.do_copy_data_start>
+
+0000003e <.do_copy_data_loop>:
+  3e:	05 90       	lpm	r0, Z+
+  40:	0d 92       	st	X+, r0
+
+00000042 <.do_copy_data_start>:
+  42:	a2 36       	cpi	r26, 0x62	; 98
+  44:	b1 07       	cpc	r27, r17
+  46:	d9 f7       	brne	.-10     	; 0x3e <.do_copy_data_loop>
+
+00000048 <__do_clear_bss>:
+  48:	10 e0       	ldi	r17, 0x00	; 0
+  4a:	a2 e6       	ldi	r26, 0x62	; 98
+  4c:	b0 e0       	ldi	r27, 0x00	; 0
+  4e:	01 c0       	rjmp	.+2      	; 0x52 <.do_clear_bss_start>
+
+00000050 <.do_clear_bss_loop>:
+  50:	1d 92       	st	X+, r1
+
+00000052 <.do_clear_bss_start>:
+  52:	a2 38       	cpi	r26, 0x82	; 130
+  54:	b1 07       	cpc	r27, r17
+  56:	e1 f7       	brne	.-8      	; 0x50 <.do_clear_bss_loop>
+  58:	bf d1       	rcall	.+894    	; 0x3d8 <main>
+  5a:	ed c3       	rjmp	.+2010   	; 0x836 <_exit>
+
+0000005c <__bad_interrupt>:
+  5c:	d1 cf       	rjmp	.-94     	; 0x0 <__vectors>
+
+0000005e <PutBut>:
+
+static uint8_t buf[BUT_SIZE_BUF];
+static uint8_t head, tail, count;
+
+static void PutBut(uint8_t but)
+{
+  5e:	df 93       	push	r29
+  60:	cf 93       	push	r28
+  62:	0f 92       	push	r0
+  64:	cd b7       	in	r28, 0x3d	; 61
+  66:	de b7       	in	r29, 0x3e	; 62
+  68:	89 83       	std	Y+1, r24	; 0x01
+  if (count < BUT_SIZE_BUF){
+  6a:	80 91 78 00 	lds	r24, 0x0078
+  6e:	88 30       	cpi	r24, 0x08	; 8
+  70:	c0 f4       	brcc	.+48     	; 0xa2 <PutBut+0x44>
+     buf[head] = but;
+  72:	80 91 76 00 	lds	r24, 0x0076
+  76:	88 2f       	mov	r24, r24
+  78:	90 e0       	ldi	r25, 0x00	; 0
+  7a:	fc 01       	movw	r30, r24
+  7c:	e2 59       	subi	r30, 0x92	; 146
+  7e:	ff 4f       	sbci	r31, 0xFF	; 255
+  80:	89 81       	ldd	r24, Y+1	; 0x01
+  82:	80 83       	st	Z, r24
+     count++;
+  84:	80 91 78 00 	lds	r24, 0x0078
+  88:	8f 5f       	subi	r24, 0xFF	; 255
+  8a:	80 93 78 00 	sts	0x0078, r24
+     head++;
+  8e:	80 91 76 00 	lds	r24, 0x0076
+  92:	8f 5f       	subi	r24, 0xFF	; 255
+  94:	80 93 76 00 	sts	0x0076, r24
+     head &= (BUT_SIZE_BUF - 1);    
+  98:	80 91 76 00 	lds	r24, 0x0076
+  9c:	87 70       	andi	r24, 0x07	; 7
+  9e:	80 93 76 00 	sts	0x0076, r24
+  }
+}
+  a2:	0f 90       	pop	r0
+  a4:	cf 91       	pop	r28
+  a6:	df 91       	pop	r29
+  a8:	08 95       	ret
+
+000000aa <BUT_GetBut>:
+
+uint8_t BUT_GetBut(void)
+{
+  aa:	df 93       	push	r29
+  ac:	cf 93       	push	r28
+  ae:	0f 92       	push	r0
+  b0:	cd b7       	in	r28, 0x3d	; 61
+  b2:	de b7       	in	r29, 0x3e	; 62
+  uint8_t but = 0;
+  b4:	19 82       	std	Y+1, r1	; 0x01
+    
+  if (count){
+  b6:	80 91 78 00 	lds	r24, 0x0078
+  ba:	88 23       	and	r24, r24
+  bc:	c1 f0       	breq	.+48     	; 0xee <BUT_GetBut+0x44>
+     but = buf[tail];
+  be:	80 91 77 00 	lds	r24, 0x0077
+  c2:	88 2f       	mov	r24, r24
+  c4:	90 e0       	ldi	r25, 0x00	; 0
+  c6:	fc 01       	movw	r30, r24
+  c8:	e2 59       	subi	r30, 0x92	; 146
+  ca:	ff 4f       	sbci	r31, 0xFF	; 255
+  cc:	80 81       	ld	r24, Z
+  ce:	89 83       	std	Y+1, r24	; 0x01
+     count--;
+  d0:	80 91 78 00 	lds	r24, 0x0078
+  d4:	81 50       	subi	r24, 0x01	; 1
+  d6:	80 93 78 00 	sts	0x0078, r24
+     tail++;
+  da:	80 91 77 00 	lds	r24, 0x0077
+  de:	8f 5f       	subi	r24, 0xFF	; 255
+  e0:	80 93 77 00 	sts	0x0077, r24
+     tail &= (BUT_SIZE_BUF - 1);    
+  e4:	80 91 77 00 	lds	r24, 0x0077
+  e8:	87 70       	andi	r24, 0x07	; 7
+  ea:	80 93 77 00 	sts	0x0077, r24
+  }
+  
+  return but;
+  ee:	89 81       	ldd	r24, Y+1	; 0x01
+}
+  f0:	0f 90       	pop	r0
+  f2:	cf 91       	pop	r28
+  f4:	df 91       	pop	r29
+  f6:	08 95       	ret
+
+000000f8 <BUT_Check>:
+
+/************************************************/
+
+static void BUT_Check(uint8_t state, uint8_t i, uint8_t settings)
+{
+  f8:	df 93       	push	r29
+  fa:	cf 93       	push	r28
+  fc:	00 d0       	rcall	.+0      	; 0xfe <BUT_Check+0x6>
+  fe:	00 d0       	rcall	.+0      	; 0x100 <BUT_Check+0x8>
+ 100:	0f 92       	push	r0
+ 102:	cd b7       	in	r28, 0x3d	; 61
+ 104:	de b7       	in	r29, 0x3e	; 62
+ 106:	8b 83       	std	Y+3, r24	; 0x03
+ 108:	6c 83       	std	Y+4, r22	; 0x04
+ 10a:	4d 83       	std	Y+5, r20	; 0x05
+  uint8_t stateTmp; 
+  uint8_t event;
+  
+  i--;
+ 10c:	8c 81       	ldd	r24, Y+4	; 0x04
+ 10e:	81 50       	subi	r24, 0x01	; 1
+ 110:	8c 83       	std	Y+4, r24	; 0x04
+   
+  stateTmp = stateBut[i];
+ 112:	8c 81       	ldd	r24, Y+4	; 0x04
+ 114:	88 2f       	mov	r24, r24
+ 116:	90 e0       	ldi	r25, 0x00	; 0
+ 118:	fc 01       	movw	r30, r24
+ 11a:	e5 59       	subi	r30, 0x95	; 149
+ 11c:	ff 4f       	sbci	r31, 0xFF	; 255
+ 11e:	80 81       	ld	r24, Z
+ 120:	8a 83       	std	Y+2, r24	; 0x02
+  event = 0;
+ 122:	19 82       	std	Y+1, r1	; 0x01
+
+#if (BUT_DOUBLE_CLICK_EN == 1)  
+  countHoldTmp = countHold[i];
+#endif
+
+ countDebTmp = countDeb[i];
+ 124:	8c 81       	ldd	r24, Y+4	; 0x04
+ 126:	88 2f       	mov	r24, r24
+ 128:	90 e0       	ldi	r25, 0x00	; 0
+ 12a:	88 0f       	add	r24, r24
+ 12c:	99 1f       	adc	r25, r25
+ 12e:	fc 01       	movw	r30, r24
+ 130:	ed 59       	subi	r30, 0x9D	; 157
+ 132:	ff 4f       	sbci	r31, 0xFF	; 255
+ 134:	80 81       	ld	r24, Z
+ 136:	91 81       	ldd	r25, Z+1	; 0x01
+ 138:	90 93 6a 00 	sts	0x006A, r25
+ 13c:	80 93 69 00 	sts	0x0069, r24
+  
+ if (state){
+ 140:	8b 81       	ldd	r24, Y+3	; 0x03
+ 142:	88 23       	and	r24, r24
+ 144:	09 f4       	brne	.+2      	; 0x148 <BUT_Check+0x50>
+ 146:	42 c0       	rjmp	.+132    	; 0x1cc <BUT_Check+0xd4>
+    if (countDebTmp < BUT_COUNT_MAX){
+ 148:	80 91 69 00 	lds	r24, 0x0069
+ 14c:	90 91 6a 00 	lds	r25, 0x006A
+ 150:	21 e0       	ldi	r18, 0x01	; 1
+ 152:	85 3f       	cpi	r24, 0xF5	; 245
+ 154:	92 07       	cpc	r25, r18
+ 156:	08 f0       	brcs	.+2      	; 0x15a <BUT_Check+0x62>
+ 158:	57 c0       	rjmp	.+174    	; 0x208 <BUT_Check+0x110>
+       countDebTmp++;
+ 15a:	80 91 69 00 	lds	r24, 0x0069
+ 15e:	90 91 6a 00 	lds	r25, 0x006A
+ 162:	01 96       	adiw	r24, 0x01	; 1
+ 164:	90 93 6a 00 	sts	0x006A, r25
+ 168:	80 93 69 00 	sts	0x0069, r24
+
+       if (countDebTmp > BUT_COUNT_THR){
+ 16c:	80 91 69 00 	lds	r24, 0x0069
+ 170:	90 91 6a 00 	lds	r25, 0x006A
+ 174:	8b 30       	cpi	r24, 0x0B	; 11
+ 176:	91 05       	cpc	r25, r1
+ 178:	98 f0       	brcs	.+38     	; 0x1a0 <BUT_Check+0xa8>
+          if (!(stateTmp & FLAG_BUT_PRESSED)){
+ 17a:	8a 81       	ldd	r24, Y+2	; 0x02
+ 17c:	88 2f       	mov	r24, r24
+ 17e:	90 e0       	ldi	r25, 0x00	; 0
+ 180:	81 70       	andi	r24, 0x01	; 1
+ 182:	90 70       	andi	r25, 0x00	; 0
+ 184:	00 97       	sbiw	r24, 0x00	; 0
+ 186:	61 f4       	brne	.+24     	; 0x1a0 <BUT_Check+0xa8>
+             stateTmp |= FLAG_BUT_PRESSED;
+ 188:	8a 81       	ldd	r24, Y+2	; 0x02
+ 18a:	81 60       	ori	r24, 0x01	; 1
+ 18c:	8a 83       	std	Y+2, r24	; 0x02
+             
+#if (BUT_PRESSED_EN == 1)
+             SaveEvent_m(settings, BUT_EV_PRESSED, BUT_PRESSED_CODE, event);  
+ 18e:	8d 81       	ldd	r24, Y+5	; 0x05
+ 190:	88 2f       	mov	r24, r24
+ 192:	90 e0       	ldi	r25, 0x00	; 0
+ 194:	81 70       	andi	r24, 0x01	; 1
+ 196:	90 70       	andi	r25, 0x00	; 0
+ 198:	88 23       	and	r24, r24
+ 19a:	11 f0       	breq	.+4      	; 0x1a0 <BUT_Check+0xa8>
+ 19c:	81 e0       	ldi	r24, 0x01	; 1
+ 19e:	89 83       	std	Y+1, r24	; 0x01
+#endif                   
+          }
+       }
+       
+       if (countDebTmp > BUT_COUNT_HELD){
+ 1a0:	80 91 69 00 	lds	r24, 0x0069
+ 1a4:	90 91 6a 00 	lds	r25, 0x006A
+ 1a8:	21 e0       	ldi	r18, 0x01	; 1
+ 1aa:	85 3f       	cpi	r24, 0xF5	; 245
+ 1ac:	92 07       	cpc	r25, r18
+ 1ae:	60 f1       	brcs	.+88     	; 0x208 <BUT_Check+0x110>
+         if (!(stateTmp & FLAG_BUT_HOLD)){
+ 1b0:	8a 81       	ldd	r24, Y+2	; 0x02
+ 1b2:	88 2f       	mov	r24, r24
+ 1b4:	90 e0       	ldi	r25, 0x00	; 0
+ 1b6:	82 70       	andi	r24, 0x02	; 2
+ 1b8:	90 70       	andi	r25, 0x00	; 0
+ 1ba:	00 97       	sbiw	r24, 0x00	; 0
+ 1bc:	29 f5       	brne	.+74     	; 0x208 <BUT_Check+0x110>
+            stateTmp &= ~(FLAG_BUT_RELEASED);
+ 1be:	8a 81       	ldd	r24, Y+2	; 0x02
+ 1c0:	8b 7f       	andi	r24, 0xFB	; 251
+ 1c2:	8a 83       	std	Y+2, r24	; 0x02
+            stateTmp |= FLAG_BUT_HOLD;
+ 1c4:	8a 81       	ldd	r24, Y+2	; 0x02
+ 1c6:	82 60       	ori	r24, 0x02	; 2
+ 1c8:	8a 83       	std	Y+2, r24	; 0x02
+ 1ca:	1e c0       	rjmp	.+60     	; 0x208 <BUT_Check+0x110>
+           SaveEvent_m(settings, BUT_EV_RELEASED, BUT_RELEASED_CODE, event);
+  #endif           
+        }
+     }
+#else
+     if ((stateTmp & FLAG_BUT_PRESSED)&&(!(stateTmp & FLAG_BUT_HOLD))){
+ 1cc:	8a 81       	ldd	r24, Y+2	; 0x02
+ 1ce:	88 2f       	mov	r24, r24
+ 1d0:	90 e0       	ldi	r25, 0x00	; 0
+ 1d2:	81 70       	andi	r24, 0x01	; 1
+ 1d4:	90 70       	andi	r25, 0x00	; 0
+ 1d6:	88 23       	and	r24, r24
+ 1d8:	81 f0       	breq	.+32     	; 0x1fa <BUT_Check+0x102>
+ 1da:	8a 81       	ldd	r24, Y+2	; 0x02
+ 1dc:	88 2f       	mov	r24, r24
+ 1de:	90 e0       	ldi	r25, 0x00	; 0
+ 1e0:	82 70       	andi	r24, 0x02	; 2
+ 1e2:	90 70       	andi	r25, 0x00	; 0
+ 1e4:	00 97       	sbiw	r24, 0x00	; 0
+ 1e6:	49 f4       	brne	.+18     	; 0x1fa <BUT_Check+0x102>
+        SaveEvent_m(settings, BUT_EV_RELEASED, BUT_RELEASED_CODE, event);
+ 1e8:	8d 81       	ldd	r24, Y+5	; 0x05
+ 1ea:	88 2f       	mov	r24, r24
+ 1ec:	90 e0       	ldi	r25, 0x00	; 0
+ 1ee:	84 70       	andi	r24, 0x04	; 4
+ 1f0:	90 70       	andi	r25, 0x00	; 0
+ 1f2:	00 97       	sbiw	r24, 0x00	; 0
+ 1f4:	11 f0       	breq	.+4      	; 0x1fa <BUT_Check+0x102>
+ 1f6:	83 e0       	ldi	r24, 0x03	; 3
+ 1f8:	89 83       	std	Y+1, r24	; 0x01
+     if ((stateTmp & FLAG_BUT_PRESSED)&&(stateTmp & FLAG_BUT_HOLD)){
+        SaveEvent_m(settings, BUT_EV_RELEASED_LONG, BUT_RELEASED_LONG_CODE, event);
+     }
+#endif     
+
+     countDebTmp = 0;
+ 1fa:	10 92 6a 00 	sts	0x006A, r1
+ 1fe:	10 92 69 00 	sts	0x0069, r1
+     stateTmp &= ~(FLAG_BUT_PRESSED|FLAG_BUT_HOLD);
+ 202:	8a 81       	ldd	r24, Y+2	; 0x02
+ 204:	8c 7f       	andi	r24, 0xFC	; 252
+ 206:	8a 83       	std	Y+2, r24	; 0x02
+  }
+ 
+  countHold[i] = countHoldTmp;
+#endif       
+  
+  if (event){
+ 208:	89 81       	ldd	r24, Y+1	; 0x01
+ 20a:	88 23       	and	r24, r24
+ 20c:	29 f0       	breq	.+10     	; 0x218 <BUT_Check+0x120>
+     PutBut(i+1);
+ 20e:	8c 81       	ldd	r24, Y+4	; 0x04
+ 210:	8f 5f       	subi	r24, 0xFF	; 255
+ 212:	25 df       	rcall	.-438    	; 0x5e <PutBut>
+     PutBut(event);
+ 214:	89 81       	ldd	r24, Y+1	; 0x01
+ 216:	23 df       	rcall	.-442    	; 0x5e <PutBut>
+  }
+  
+  countDeb[i] = countDebTmp;
+ 218:	8c 81       	ldd	r24, Y+4	; 0x04
+ 21a:	88 2f       	mov	r24, r24
+ 21c:	90 e0       	ldi	r25, 0x00	; 0
+ 21e:	20 91 69 00 	lds	r18, 0x0069
+ 222:	30 91 6a 00 	lds	r19, 0x006A
+ 226:	88 0f       	add	r24, r24
+ 228:	99 1f       	adc	r25, r25
+ 22a:	fc 01       	movw	r30, r24
+ 22c:	ed 59       	subi	r30, 0x9D	; 157
+ 22e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 230:	31 83       	std	Z+1, r19	; 0x01
+ 232:	20 83       	st	Z, r18
+  stateBut[i] = stateTmp; 
+ 234:	8c 81       	ldd	r24, Y+4	; 0x04
+ 236:	88 2f       	mov	r24, r24
+ 238:	90 e0       	ldi	r25, 0x00	; 0
+ 23a:	fc 01       	movw	r30, r24
+ 23c:	e5 59       	subi	r30, 0x95	; 149
+ 23e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 240:	8a 81       	ldd	r24, Y+2	; 0x02
+ 242:	80 83       	st	Z, r24
+}
+ 244:	0f 90       	pop	r0
+ 246:	0f 90       	pop	r0
+ 248:	0f 90       	pop	r0
+ 24a:	0f 90       	pop	r0
+ 24c:	0f 90       	pop	r0
+ 24e:	cf 91       	pop	r28
+ 250:	df 91       	pop	r29
+ 252:	08 95       	ret
+
+00000254 <BUT_Init>:
+
+/******************************************************/
+
+void BUT_Init(void)
+{
+ 254:	df 93       	push	r29
+ 256:	cf 93       	push	r28
+ 258:	0f 92       	push	r0
+ 25a:	cd b7       	in	r28, 0x3d	; 61
+ 25c:	de b7       	in	r29, 0x3e	; 62
+  uint8_t i;
+  
+  for(i = 0; i < BUT_AMOUNT; i++){
+ 25e:	19 82       	std	Y+1, r1	; 0x01
+ 260:	14 c0       	rjmp	.+40     	; 0x28a <BUT_Init+0x36>
+     countDeb[i] = 0;
+ 262:	89 81       	ldd	r24, Y+1	; 0x01
+ 264:	88 2f       	mov	r24, r24
+ 266:	90 e0       	ldi	r25, 0x00	; 0
+ 268:	88 0f       	add	r24, r24
+ 26a:	99 1f       	adc	r25, r25
+ 26c:	fc 01       	movw	r30, r24
+ 26e:	ed 59       	subi	r30, 0x9D	; 157
+ 270:	ff 4f       	sbci	r31, 0xFF	; 255
+ 272:	11 82       	std	Z+1, r1	; 0x01
+ 274:	10 82       	st	Z, r1
+     stateBut[i] = 0;
+ 276:	89 81       	ldd	r24, Y+1	; 0x01
+ 278:	88 2f       	mov	r24, r24
+ 27a:	90 e0       	ldi	r25, 0x00	; 0
+ 27c:	fc 01       	movw	r30, r24
+ 27e:	e5 59       	subi	r30, 0x95	; 149
+ 280:	ff 4f       	sbci	r31, 0xFF	; 255
+ 282:	10 82       	st	Z, r1
+
+void BUT_Init(void)
+{
+  uint8_t i;
+  
+  for(i = 0; i < BUT_AMOUNT; i++){
+ 284:	89 81       	ldd	r24, Y+1	; 0x01
+ 286:	8f 5f       	subi	r24, 0xFF	; 255
+ 288:	89 83       	std	Y+1, r24	; 0x01
+ 28a:	89 81       	ldd	r24, Y+1	; 0x01
+ 28c:	83 30       	cpi	r24, 0x03	; 3
+ 28e:	48 f3       	brcs	.-46     	; 0x262 <BUT_Init+0xe>
+     countHold[i] = 0;
+#endif
+     
+  }
+  
+  for(i = 0; i < BUT_SIZE_BUF; i++){
+ 290:	19 82       	std	Y+1, r1	; 0x01
+ 292:	0a c0       	rjmp	.+20     	; 0x2a8 <BUT_Init+0x54>
+     buf[i] = 0;    
+ 294:	89 81       	ldd	r24, Y+1	; 0x01
+ 296:	88 2f       	mov	r24, r24
+ 298:	90 e0       	ldi	r25, 0x00	; 0
+ 29a:	fc 01       	movw	r30, r24
+ 29c:	e2 59       	subi	r30, 0x92	; 146
+ 29e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 2a0:	10 82       	st	Z, r1
+     countHold[i] = 0;
+#endif
+     
+  }
+  
+  for(i = 0; i < BUT_SIZE_BUF; i++){
+ 2a2:	89 81       	ldd	r24, Y+1	; 0x01
+ 2a4:	8f 5f       	subi	r24, 0xFF	; 255
+ 2a6:	89 83       	std	Y+1, r24	; 0x01
+ 2a8:	89 81       	ldd	r24, Y+1	; 0x01
+ 2aa:	88 30       	cpi	r24, 0x08	; 8
+ 2ac:	98 f3       	brcs	.-26     	; 0x294 <BUT_Init+0x40>
+     buf[i] = 0;    
+  }
+  
+  head = 0;
+ 2ae:	10 92 76 00 	sts	0x0076, r1
+  tail = 0;  
+ 2b2:	10 92 77 00 	sts	0x0077, r1
+  count = 0;
+ 2b6:	10 92 78 00 	sts	0x0078, r1
+
+#ifdef BUT_1_ID  
+  ButtonInit_m(BUT_1_DDRX, BUT_1_PORTX, BUT_1_PIN, BUT_1_PULL);
+ 2ba:	a7 e3       	ldi	r26, 0x37	; 55
+ 2bc:	b0 e0       	ldi	r27, 0x00	; 0
+ 2be:	e7 e3       	ldi	r30, 0x37	; 55
+ 2c0:	f0 e0       	ldi	r31, 0x00	; 0
+ 2c2:	80 81       	ld	r24, Z
+ 2c4:	8f 7e       	andi	r24, 0xEF	; 239
+ 2c6:	8c 93       	st	X, r24
+ 2c8:	a8 e3       	ldi	r26, 0x38	; 56
+ 2ca:	b0 e0       	ldi	r27, 0x00	; 0
+ 2cc:	e8 e3       	ldi	r30, 0x38	; 56
+ 2ce:	f0 e0       	ldi	r31, 0x00	; 0
+ 2d0:	80 81       	ld	r24, Z
+ 2d2:	80 61       	ori	r24, 0x10	; 16
+ 2d4:	8c 93       	st	X, r24
+#endif
+
+#ifdef BUT_2_ID  
+  ButtonInit_m(BUT_2_DDRX, BUT_2_PORTX, BUT_2_PIN, BUT_2_PULL);
+ 2d6:	a7 e3       	ldi	r26, 0x37	; 55
+ 2d8:	b0 e0       	ldi	r27, 0x00	; 0
+ 2da:	e7 e3       	ldi	r30, 0x37	; 55
+ 2dc:	f0 e0       	ldi	r31, 0x00	; 0
+ 2de:	80 81       	ld	r24, Z
+ 2e0:	8f 7d       	andi	r24, 0xDF	; 223
+ 2e2:	8c 93       	st	X, r24
+ 2e4:	a8 e3       	ldi	r26, 0x38	; 56
+ 2e6:	b0 e0       	ldi	r27, 0x00	; 0
+ 2e8:	e8 e3       	ldi	r30, 0x38	; 56
+ 2ea:	f0 e0       	ldi	r31, 0x00	; 0
+ 2ec:	80 81       	ld	r24, Z
+ 2ee:	80 62       	ori	r24, 0x20	; 32
+ 2f0:	8c 93       	st	X, r24
+#endif  
+
+#ifdef BUT_3_ID  
+  ButtonInit_m(BUT_3_DDRX, BUT_3_PORTX, BUT_3_PIN, BUT_3_PULL);
+ 2f2:	a7 e3       	ldi	r26, 0x37	; 55
+ 2f4:	b0 e0       	ldi	r27, 0x00	; 0
+ 2f6:	e7 e3       	ldi	r30, 0x37	; 55
+ 2f8:	f0 e0       	ldi	r31, 0x00	; 0
+ 2fa:	80 81       	ld	r24, Z
+ 2fc:	8f 7b       	andi	r24, 0xBF	; 191
+ 2fe:	8c 93       	st	X, r24
+ 300:	a8 e3       	ldi	r26, 0x38	; 56
+ 302:	b0 e0       	ldi	r27, 0x00	; 0
+ 304:	e8 e3       	ldi	r30, 0x38	; 56
+ 306:	f0 e0       	ldi	r31, 0x00	; 0
+ 308:	80 81       	ld	r24, Z
+ 30a:	80 64       	ori	r24, 0x40	; 64
+ 30c:	8c 93       	st	X, r24
+#endif  
+
+#ifdef BUT_32_ID  
+  ButtonInit_m(BUT_32_DDRX, BUT_32_PORTX, BUT_32_PIN, BUT_32_PULL);
+#endif  
+}
+ 30e:	0f 90       	pop	r0
+ 310:	cf 91       	pop	r28
+ 312:	df 91       	pop	r29
+ 314:	08 95       	ret
+
+00000316 <BUT_Poll>:
+
+/**********************************************/
+
+void BUT_Poll(void)
+{
+ 316:	df 93       	push	r29
+ 318:	cf 93       	push	r28
+ 31a:	00 d0       	rcall	.+0      	; 0x31c <BUT_Poll+0x6>
+ 31c:	0f 92       	push	r0
+ 31e:	cd b7       	in	r28, 0x3d	; 61
+ 320:	de b7       	in	r29, 0x3e	; 62
+#if (BUT_POLL_ROTATION > 0)
+  static uint8_t i = 0;
+#endif
+
+  uint8_t state = 0;
+ 322:	19 82       	std	Y+1, r1	; 0x01
+
+  Switch_m(i);
+ 324:	80 91 62 00 	lds	r24, 0x0062
+ 328:	28 2f       	mov	r18, r24
+ 32a:	30 e0       	ldi	r19, 0x00	; 0
+ 32c:	3b 83       	std	Y+3, r19	; 0x03
+ 32e:	2a 83       	std	Y+2, r18	; 0x02
+ 330:	8a 81       	ldd	r24, Y+2	; 0x02
+ 332:	9b 81       	ldd	r25, Y+3	; 0x03
+ 334:	81 30       	cpi	r24, 0x01	; 1
+ 336:	91 05       	cpc	r25, r1
+ 338:	d9 f0       	breq	.+54     	; 0x370 <BUT_Poll+0x5a>
+ 33a:	2a 81       	ldd	r18, Y+2	; 0x02
+ 33c:	3b 81       	ldd	r19, Y+3	; 0x03
+ 33e:	22 30       	cpi	r18, 0x02	; 2
+ 340:	31 05       	cpc	r19, r1
+ 342:	41 f1       	breq	.+80     	; 0x394 <BUT_Poll+0x7e>
+ 344:	8a 81       	ldd	r24, Y+2	; 0x02
+ 346:	9b 81       	ldd	r25, Y+3	; 0x03
+ 348:	00 97       	sbiw	r24, 0x00	; 0
+ 34a:	a9 f5       	brne	.+106    	; 0x3b6 <BUT_Poll+0xa0>
+  
+#ifdef BUT_1_ID  
+  CheckOneBut_m(BUT_1_ID, BUT_1_PINX, BUT_1_PIN, BUT_1_LEV, BUT_1_EVENT, state);
+ 34c:	e6 e3       	ldi	r30, 0x36	; 54
+ 34e:	f0 e0       	ldi	r31, 0x00	; 0
+ 350:	80 81       	ld	r24, Z
+ 352:	88 2f       	mov	r24, r24
+ 354:	90 e0       	ldi	r25, 0x00	; 0
+ 356:	80 71       	andi	r24, 0x10	; 16
+ 358:	90 70       	andi	r25, 0x00	; 0
+ 35a:	00 97       	sbiw	r24, 0x00	; 0
+ 35c:	19 f4       	brne	.+6      	; 0x364 <BUT_Poll+0x4e>
+ 35e:	81 e0       	ldi	r24, 0x01	; 1
+ 360:	89 83       	std	Y+1, r24	; 0x01
+ 362:	01 c0       	rjmp	.+2      	; 0x366 <BUT_Poll+0x50>
+ 364:	19 82       	std	Y+1, r1	; 0x01
+ 366:	89 81       	ldd	r24, Y+1	; 0x01
+ 368:	61 e0       	ldi	r22, 0x01	; 1
+ 36a:	41 e0       	ldi	r20, 0x01	; 1
+ 36c:	c5 de       	rcall	.-630    	; 0xf8 <BUT_Check>
+ 36e:	23 c0       	rjmp	.+70     	; 0x3b6 <BUT_Poll+0xa0>
+#endif
+
+#ifdef BUT_2_ID  
+  CheckOneBut_m(BUT_2_ID, BUT_2_PINX, BUT_2_PIN, BUT_2_LEV, BUT_2_EVENT, state);
+ 370:	e6 e3       	ldi	r30, 0x36	; 54
+ 372:	f0 e0       	ldi	r31, 0x00	; 0
+ 374:	80 81       	ld	r24, Z
+ 376:	88 2f       	mov	r24, r24
+ 378:	90 e0       	ldi	r25, 0x00	; 0
+ 37a:	80 72       	andi	r24, 0x20	; 32
+ 37c:	90 70       	andi	r25, 0x00	; 0
+ 37e:	00 97       	sbiw	r24, 0x00	; 0
+ 380:	19 f4       	brne	.+6      	; 0x388 <BUT_Poll+0x72>
+ 382:	81 e0       	ldi	r24, 0x01	; 1
+ 384:	89 83       	std	Y+1, r24	; 0x01
+ 386:	01 c0       	rjmp	.+2      	; 0x38a <BUT_Poll+0x74>
+ 388:	19 82       	std	Y+1, r1	; 0x01
+ 38a:	89 81       	ldd	r24, Y+1	; 0x01
+ 38c:	62 e0       	ldi	r22, 0x02	; 2
+ 38e:	41 e0       	ldi	r20, 0x01	; 1
+ 390:	b3 de       	rcall	.-666    	; 0xf8 <BUT_Check>
+ 392:	11 c0       	rjmp	.+34     	; 0x3b6 <BUT_Poll+0xa0>
+#endif  
+
+#ifdef BUT_3_ID  
+  CheckOneBut_m(BUT_3_ID, BUT_3_PINX, BUT_3_PIN, BUT_3_LEV, BUT_3_EVENT, state);
+ 394:	e6 e3       	ldi	r30, 0x36	; 54
+ 396:	f0 e0       	ldi	r31, 0x00	; 0
+ 398:	80 81       	ld	r24, Z
+ 39a:	88 2f       	mov	r24, r24
+ 39c:	90 e0       	ldi	r25, 0x00	; 0
+ 39e:	80 74       	andi	r24, 0x40	; 64
+ 3a0:	90 70       	andi	r25, 0x00	; 0
+ 3a2:	00 97       	sbiw	r24, 0x00	; 0
+ 3a4:	19 f4       	brne	.+6      	; 0x3ac <BUT_Poll+0x96>
+ 3a6:	81 e0       	ldi	r24, 0x01	; 1
+ 3a8:	89 83       	std	Y+1, r24	; 0x01
+ 3aa:	01 c0       	rjmp	.+2      	; 0x3ae <BUT_Poll+0x98>
+ 3ac:	19 82       	std	Y+1, r1	; 0x01
+ 3ae:	89 81       	ldd	r24, Y+1	; 0x01
+ 3b0:	63 e0       	ldi	r22, 0x03	; 3
+ 3b2:	41 e0       	ldi	r20, 0x01	; 1
+ 3b4:	a1 de       	rcall	.-702    	; 0xf8 <BUT_Check>
+#endif    
+
+   End_m();
+
+#if (BUT_POLL_ROTATION > 0)
+   i++;
+ 3b6:	80 91 62 00 	lds	r24, 0x0062
+ 3ba:	8f 5f       	subi	r24, 0xFF	; 255
+ 3bc:	80 93 62 00 	sts	0x0062, r24
+   if (i >= BUT_AMOUNT){
+ 3c0:	80 91 62 00 	lds	r24, 0x0062
+ 3c4:	83 30       	cpi	r24, 0x03	; 3
+ 3c6:	10 f0       	brcs	.+4      	; 0x3cc <BUT_Poll+0xb6>
+     i = 0;
+ 3c8:	10 92 62 00 	sts	0x0062, r1
+   }
+#endif   
+   
+}
+ 3cc:	0f 90       	pop	r0
+ 3ce:	0f 90       	pop	r0
+ 3d0:	0f 90       	pop	r0
+ 3d2:	cf 91       	pop	r28
+ 3d4:	df 91       	pop	r29
+ 3d6:	08 95       	ret
+
+000003d8 <main>:
+volatile uint8_t update;
+volatile uint8_t showPoint;
+
+//----------------------------------------
+void main(void)
+{
+ 3d8:	df 93       	push	r29
+ 3da:	cf 93       	push	r28
+ 3dc:	00 d0       	rcall	.+0      	; 0x3de <main+0x6>
+ 3de:	00 d0       	rcall	.+0      	; 0x3e0 <main+0x8>
+ 3e0:	00 d0       	rcall	.+0      	; 0x3e2 <main+0xa>
+ 3e2:	cd b7       	in	r28, 0x3d	; 61
+ 3e4:	de b7       	in	r29, 0x3e	; 62
+	uint8_t buttState  = 0;
+ 3e6:	1c 82       	std	Y+4, r1	; 0x04
+	uint8_t buttPress;
+	uint8_t isStart    = TRUE;
+ 3e8:	81 e0       	ldi	r24, 0x01	; 1
+ 3ea:	8a 83       	std	Y+2, r24	; 0x02
+	uint8_t firstStart = TRUE;
+ 3ec:	81 e0       	ldi	r24, 0x01	; 1
+ 3ee:	89 83       	std	Y+1, r24	; 0x01
+
+	BUT_Init();
+ 3f0:	31 df       	rcall	.-414    	; 0x254 <BUT_Init>
+	timer_init();
+ 3f2:	7a d0       	rcall	.+244    	; 0x4e8 <timer_init>
+	// DDRD порты на "ВЫХОД"
+	DDRD = 0xFF;
+ 3f4:	e1 e3       	ldi	r30, 0x31	; 49
+ 3f6:	f0 e0       	ldi	r31, 0x00	; 0
+ 3f8:	8f ef       	ldi	r24, 0xFF	; 255
+ 3fa:	80 83       	st	Z, r24
+	// DDRB порты на "ВЫХОД" 0, 1, 2, 3. Порты на "ВХОД" 4, 5, 6, 7.
+	DDRB = 0b00001111;
+ 3fc:	e7 e3       	ldi	r30, 0x37	; 55
+ 3fe:	f0 e0       	ldi	r31, 0x00	; 0
+ 400:	8f e0       	ldi	r24, 0x0F	; 15
+ 402:	80 83       	st	Z, r24
+	PORTD = 0b11111111;
+ 404:	e2 e3       	ldi	r30, 0x32	; 50
+ 406:	f0 e0       	ldi	r31, 0x00	; 0
+ 408:	8f ef       	ldi	r24, 0xFF	; 255
+ 40a:	80 83       	st	Z, r24
+	// Включение подтягивающего резистора на пинах B5 и B6
+	PORTB = 0b00110000;
+ 40c:	e8 e3       	ldi	r30, 0x38	; 56
+ 40e:	f0 e0       	ldi	r31, 0x00	; 0
+ 410:	80 e3       	ldi	r24, 0x30	; 48
+ 412:	80 83       	st	Z, r24
+	// Разрешим прерывания
+	sei();
+ 414:	78 94       	sei
+
+	while (1)
+	{
+        if (update == TRUE)
+ 416:	80 91 80 00 	lds	r24, 0x0080
+ 41a:	81 30       	cpi	r24, 0x01	; 1
+ 41c:	31 f4       	brne	.+12     	; 0x42a <main+0x52>
+            ledPrint(timerMinutes, timerSeconds);
+ 41e:	80 91 60 00 	lds	r24, 0x0060
+ 422:	90 91 79 00 	lds	r25, 0x0079
+ 426:	69 2f       	mov	r22, r25
+ 428:	cb d1       	rcall	.+918    	; 0x7c0 <ledPrint>
+
+        BUT_Poll();
+ 42a:	75 df       	rcall	.-278    	; 0x316 <BUT_Poll>
+        buttPress = BUT_GetBut();
+ 42c:	3e de       	rcall	.-900    	; 0xaa <BUT_GetBut>
+ 42e:	8b 83       	std	Y+3, r24	; 0x03
+
+        if (buttPress == BUTT_START)
+ 430:	8b 81       	ldd	r24, Y+3	; 0x03
+ 432:	81 30       	cpi	r24, 0x01	; 1
+ 434:	c1 f5       	brne	.+112    	; 0x4a6 <__stack+0x47>
+        {
+            buttState = BUT_GetBut();
+ 436:	39 de       	rcall	.-910    	; 0xaa <BUT_GetBut>
+ 438:	8c 83       	std	Y+4, r24	; 0x04
+            if (buttState == 1 && !isStart)
+ 43a:	8c 81       	ldd	r24, Y+4	; 0x04
+ 43c:	81 30       	cpi	r24, 0x01	; 1
+ 43e:	99 f4       	brne	.+38     	; 0x466 <__stack+0x7>
+ 440:	8a 81       	ldd	r24, Y+2	; 0x02
+ 442:	88 23       	and	r24, r24
+ 444:	81 f4       	brne	.+32     	; 0x466 <__stack+0x7>
+            {
+                TIMER1_STOP;
+ 446:	ae e4       	ldi	r26, 0x4E	; 78
+ 448:	b0 e0       	ldi	r27, 0x00	; 0
+ 44a:	ee e4       	ldi	r30, 0x4E	; 78
+ 44c:	f0 e0       	ldi	r31, 0x00	; 0
+ 44e:	80 81       	ld	r24, Z
+ 450:	8b 7f       	andi	r24, 0xFB	; 251
+ 452:	8c 93       	st	X, r24
+                isStart = !isStart;
+ 454:	1d 82       	std	Y+5, r1	; 0x05
+ 456:	8a 81       	ldd	r24, Y+2	; 0x02
+ 458:	88 23       	and	r24, r24
+ 45a:	11 f4       	brne	.+4      	; 0x460 <__stack+0x1>
+ 45c:	81 e0       	ldi	r24, 0x01	; 1
+ 45e:	8d 83       	std	Y+5, r24	; 0x05
+ 460:	8d 81       	ldd	r24, Y+5	; 0x05
+ 462:	8a 83       	std	Y+2, r24	; 0x02
+ 464:	20 c0       	rjmp	.+64     	; 0x4a6 <__stack+0x47>
+            }
+
+            else if (buttState == 1 && isStart)
+ 466:	8c 81       	ldd	r24, Y+4	; 0x04
+ 468:	81 30       	cpi	r24, 0x01	; 1
+ 46a:	e9 f4       	brne	.+58     	; 0x4a6 <__stack+0x47>
+ 46c:	8a 81       	ldd	r24, Y+2	; 0x02
+ 46e:	88 23       	and	r24, r24
+ 470:	d1 f0       	breq	.+52     	; 0x4a6 <__stack+0x47>
+            {
+                if (firstStart)
+ 472:	89 81       	ldd	r24, Y+1	; 0x01
+ 474:	88 23       	and	r24, r24
+ 476:	31 f0       	breq	.+12     	; 0x484 <__stack+0x25>
+                {
+                    timerMinutes = 60;
+ 478:	8c e3       	ldi	r24, 0x3C	; 60
+ 47a:	80 93 60 00 	sts	0x0060, r24
+                    timerSeconds = 0;
+ 47e:	10 92 79 00 	sts	0x0079, r1
+                    firstStart = FALSE;
+ 482:	19 82       	std	Y+1, r1	; 0x01
+                }
+
+                TIMER1_START;
+ 484:	ae e4       	ldi	r26, 0x4E	; 78
+ 486:	b0 e0       	ldi	r27, 0x00	; 0
+ 488:	ee e4       	ldi	r30, 0x4E	; 78
+ 48a:	f0 e0       	ldi	r31, 0x00	; 0
+ 48c:	80 81       	ld	r24, Z
+ 48e:	84 60       	ori	r24, 0x04	; 4
+ 490:	8c 93       	st	X, r24
+                isStart = !isStart;
+ 492:	1e 82       	std	Y+6, r1	; 0x06
+ 494:	8a 81       	ldd	r24, Y+2	; 0x02
+ 496:	88 23       	and	r24, r24
+ 498:	11 f4       	brne	.+4      	; 0x49e <__stack+0x3f>
+ 49a:	81 e0       	ldi	r24, 0x01	; 1
+ 49c:	8e 83       	std	Y+6, r24	; 0x06
+ 49e:	8e 81       	ldd	r24, Y+6	; 0x06
+ 4a0:	8a 83       	std	Y+2, r24	; 0x02
+                showPoint = FALSE;
+ 4a2:	10 92 7e 00 	sts	0x007E, r1
+            }
+        }
+
+
+        if (buttPress == BUTT_RESET)
+ 4a6:	8b 81       	ldd	r24, Y+3	; 0x03
+ 4a8:	82 30       	cpi	r24, 0x02	; 2
+ 4aa:	09 f0       	breq	.+2      	; 0x4ae <__stack+0x4f>
+ 4ac:	b4 cf       	rjmp	.-152    	; 0x416 <main+0x3e>
+        {
+            //buttState = BUT_GetBut();
+            if (buttState == 1)
+ 4ae:	8c 81       	ldd	r24, Y+4	; 0x04
+ 4b0:	81 30       	cpi	r24, 0x01	; 1
+ 4b2:	09 f0       	breq	.+2      	; 0x4b6 <__stack+0x57>
+ 4b4:	b0 cf       	rjmp	.-160    	; 0x416 <main+0x3e>
+            {
+                TIMER1_STOP;
+ 4b6:	ae e4       	ldi	r26, 0x4E	; 78
+ 4b8:	b0 e0       	ldi	r27, 0x00	; 0
+ 4ba:	ee e4       	ldi	r30, 0x4E	; 78
+ 4bc:	f0 e0       	ldi	r31, 0x00	; 0
+ 4be:	80 81       	ld	r24, Z
+ 4c0:	8b 7f       	andi	r24, 0xFB	; 251
+ 4c2:	8c 93       	st	X, r24
+                timerMinutes = 0;
+ 4c4:	10 92 60 00 	sts	0x0060, r1
+                timerSeconds = 0;
+ 4c8:	10 92 79 00 	sts	0x0079, r1
+                ledPrint(timerMinutes, timerSeconds);
+ 4cc:	80 91 60 00 	lds	r24, 0x0060
+ 4d0:	90 91 79 00 	lds	r25, 0x0079
+ 4d4:	69 2f       	mov	r22, r25
+ 4d6:	74 d1       	rcall	.+744    	; 0x7c0 <ledPrint>
+                isStart = TRUE;
+ 4d8:	81 e0       	ldi	r24, 0x01	; 1
+ 4da:	8a 83       	std	Y+2, r24	; 0x02
+                firstStart = TRUE;
+ 4dc:	81 e0       	ldi	r24, 0x01	; 1
+ 4de:	89 83       	std	Y+1, r24	; 0x01
+                showPoint = TRUE;
+ 4e0:	81 e0       	ldi	r24, 0x01	; 1
+ 4e2:	80 93 7e 00 	sts	0x007E, r24
+ 4e6:	97 cf       	rjmp	.-210    	; 0x416 <main+0x3e>
+
+000004e8 <timer_init>:
+}
+
+//----------------------------------------
+
+void timer_init (void)
+{
+ 4e8:	df 93       	push	r29
+ 4ea:	cf 93       	push	r28
+ 4ec:	cd b7       	in	r28, 0x3d	; 61
+ 4ee:	de b7       	in	r29, 0x3e	; 62
+	// Устанавливаем режим СТС (сброс таймера по совпадению)
+	TCCR1B |= (1 << WGM12);
+ 4f0:	ae e4       	ldi	r26, 0x4E	; 78
+ 4f2:	b0 e0       	ldi	r27, 0x00	; 0
+ 4f4:	ee e4       	ldi	r30, 0x4E	; 78
+ 4f6:	f0 e0       	ldi	r31, 0x00	; 0
+ 4f8:	80 81       	ld	r24, Z
+ 4fa:	88 60       	ori	r24, 0x08	; 8
+ 4fc:	8c 93       	st	X, r24
+	// Устанавливаем таймер 0
+	TCCR0 = 0b00000001;
+ 4fe:	e3 e5       	ldi	r30, 0x53	; 83
+ 500:	f0 e0       	ldi	r31, 0x00	; 0
+ 502:	81 e0       	ldi	r24, 0x01	; 1
+ 504:	80 83       	st	Z, r24
+	// Устанавливаем делитель таймера 0 в /8
+	TCCR0 |= (1 << CS01);
+ 506:	a3 e5       	ldi	r26, 0x53	; 83
+ 508:	b0 e0       	ldi	r27, 0x00	; 0
+ 50a:	e3 e5       	ldi	r30, 0x53	; 83
+ 50c:	f0 e0       	ldi	r31, 0x00	; 0
+ 50e:	80 81       	ld	r24, Z
+ 510:	82 60       	ori	r24, 0x02	; 2
+ 512:	8c 93       	st	X, r24
+	// Устанавливаем бит разрешения прерывания по переполнению таймера 0
+	TIMSK |= (1 << TOIE0);
+ 514:	a9 e5       	ldi	r26, 0x59	; 89
+ 516:	b0 e0       	ldi	r27, 0x00	; 0
+ 518:	e9 e5       	ldi	r30, 0x59	; 89
+ 51a:	f0 e0       	ldi	r31, 0x00	; 0
+ 51c:	80 81       	ld	r24, Z
+ 51e:	81 60       	ori	r24, 0x01	; 1
+ 520:	8c 93       	st	X, r24
+	// Устанавливаем бит разрешения прерывания 1ого счетчика по совпадению с OCR1A(H и L)
+	TIMSK  |= (1 << OCIE1A);
+ 522:	a9 e5       	ldi	r26, 0x59	; 89
+ 524:	b0 e0       	ldi	r27, 0x00	; 0
+ 526:	e9 e5       	ldi	r30, 0x59	; 89
+ 528:	f0 e0       	ldi	r31, 0x00	; 0
+ 52a:	80 81       	ld	r24, Z
+ 52c:	80 61       	ori	r24, 0x10	; 16
+ 52e:	8c 93       	st	X, r24
+	// Записываем в регистр число для сравнения 111101000010010 (31250) (секунда) // !!!11110100001001 (15625) (Пол секунды)
+	OCR1AH = 0b00111101;
+ 530:	eb e4       	ldi	r30, 0x4B	; 75
+ 532:	f0 e0       	ldi	r31, 0x00	; 0
+ 534:	8d e3       	ldi	r24, 0x3D	; 61
+ 536:	80 83       	st	Z, r24
+	OCR1AL = 0b00001001;
+ 538:	ea e4       	ldi	r30, 0x4A	; 74
+ 53a:	f0 e0       	ldi	r31, 0x00	; 0
+ 53c:	89 e0       	ldi	r24, 0x09	; 9
+ 53e:	80 83       	st	Z, r24
+	// Установим делитель /256
+	//TCCR1B |= (1 << CS12);
+	//TCCR1B |= (1 << CS10);
+	//TCCR1B |= (1 << CS11);
+}
+ 540:	cf 91       	pop	r28
+ 542:	df 91       	pop	r29
+ 544:	08 95       	ret
+
+00000546 <__vector_6>:
+
+//----------------------------------------
+/* Считаем время */
+ISR(TIMER1_COMPA_vect)
+{
+ 546:	1f 92       	push	r1
+ 548:	0f 92       	push	r0
+ 54a:	0f b6       	in	r0, 0x3f	; 63
+ 54c:	0f 92       	push	r0
+ 54e:	11 24       	eor	r1, r1
+ 550:	8f 93       	push	r24
+ 552:	df 93       	push	r29
+ 554:	cf 93       	push	r28
+ 556:	cd b7       	in	r28, 0x3d	; 61
+ 558:	de b7       	in	r29, 0x3e	; 62
+	++halfsecond;
+ 55a:	80 91 7a 00 	lds	r24, 0x007A
+ 55e:	8f 5f       	subi	r24, 0xFF	; 255
+ 560:	80 93 7a 00 	sts	0x007A, r24
+
+	if (halfsecond == 2)
+ 564:	80 91 7a 00 	lds	r24, 0x007A
+ 568:	82 30       	cpi	r24, 0x02	; 2
+ 56a:	d9 f4       	brne	.+54     	; 0x5a2 <__vector_6+0x5c>
+	{
+		if (timerSeconds == 0)
+ 56c:	80 91 79 00 	lds	r24, 0x0079
+ 570:	88 23       	and	r24, r24
+ 572:	41 f4       	brne	.+16     	; 0x584 <__vector_6+0x3e>
+		{
+			--timerMinutes;
+ 574:	80 91 60 00 	lds	r24, 0x0060
+ 578:	81 50       	subi	r24, 0x01	; 1
+ 57a:	80 93 60 00 	sts	0x0060, r24
+			timerSeconds = 60;
+ 57e:	8c e3       	ldi	r24, 0x3C	; 60
+ 580:	80 93 79 00 	sts	0x0079, r24
+		}
+
+		if (timerMinutes == 0)
+ 584:	80 91 60 00 	lds	r24, 0x0060
+ 588:	88 23       	and	r24, r24
+ 58a:	21 f4       	brne	.+8      	; 0x594 <__vector_6+0x4e>
+			timerMinutes = 60;
+ 58c:	8c e3       	ldi	r24, 0x3C	; 60
+ 58e:	80 93 60 00 	sts	0x0060, r24
+ 592:	05 c0       	rjmp	.+10     	; 0x59e <__vector_6+0x58>
+
+		else
+			--timerSeconds;
+ 594:	80 91 79 00 	lds	r24, 0x0079
+ 598:	81 50       	subi	r24, 0x01	; 1
+ 59a:	80 93 79 00 	sts	0x0079, r24
+
+		halfsecond = 0;
+ 59e:	10 92 7a 00 	sts	0x007A, r1
+	}
+
+	update = TRUE;
+ 5a2:	81 e0       	ldi	r24, 0x01	; 1
+ 5a4:	80 93 80 00 	sts	0x0080, r24
+}
+ 5a8:	cf 91       	pop	r28
+ 5aa:	df 91       	pop	r29
+ 5ac:	8f 91       	pop	r24
+ 5ae:	0f 90       	pop	r0
+ 5b0:	0f be       	out	0x3f, r0	; 63
+ 5b2:	0f 90       	pop	r0
+ 5b4:	1f 90       	pop	r1
+ 5b6:	18 95       	reti
+
+000005b8 <__vector_9>:
+
+//----------------------------------------
+/* Динамическая индикация дисплея */
+ISR(TIMER0_OVF_vect)
+{
+ 5b8:	1f 92       	push	r1
+ 5ba:	0f 92       	push	r0
+ 5bc:	0f b6       	in	r0, 0x3f	; 63
+ 5be:	0f 92       	push	r0
+ 5c0:	11 24       	eor	r1, r1
+ 5c2:	2f 93       	push	r18
+ 5c4:	3f 93       	push	r19
+ 5c6:	4f 93       	push	r20
+ 5c8:	5f 93       	push	r21
+ 5ca:	6f 93       	push	r22
+ 5cc:	7f 93       	push	r23
+ 5ce:	8f 93       	push	r24
+ 5d0:	9f 93       	push	r25
+ 5d2:	af 93       	push	r26
+ 5d4:	bf 93       	push	r27
+ 5d6:	ef 93       	push	r30
+ 5d8:	ff 93       	push	r31
+ 5da:	df 93       	push	r29
+ 5dc:	cf 93       	push	r28
+ 5de:	cd b7       	in	r28, 0x3d	; 61
+ 5e0:	de b7       	in	r29, 0x3e	; 62
+	if (n_count == 0)
+ 5e2:	80 91 7b 00 	lds	r24, 0x007B
+ 5e6:	88 23       	and	r24, r24
+ 5e8:	41 f4       	brne	.+16     	; 0x5fa <__vector_9+0x42>
+	{
+		PORTB = 0b00000001;
+ 5ea:	e8 e3       	ldi	r30, 0x38	; 56
+ 5ec:	f0 e0       	ldi	r31, 0x00	; 0
+ 5ee:	81 e0       	ldi	r24, 0x01	; 1
+ 5f0:	80 83       	st	Z, r24
+		segChar(r1);
+ 5f2:	80 91 81 00 	lds	r24, 0x0081
+ 5f6:	4c d0       	rcall	.+152    	; 0x690 <segChar>
+ 5f8:	2d c0       	rjmp	.+90     	; 0x654 <__vector_9+0x9c>
+	}
+
+	else if (n_count == 1)
+ 5fa:	80 91 7b 00 	lds	r24, 0x007B
+ 5fe:	81 30       	cpi	r24, 0x01	; 1
+ 600:	91 f4       	brne	.+36     	; 0x626 <__vector_9+0x6e>
+	{
+		PORTB = 0b00000010;
+ 602:	e8 e3       	ldi	r30, 0x38	; 56
+ 604:	f0 e0       	ldi	r31, 0x00	; 0
+ 606:	82 e0       	ldi	r24, 0x02	; 2
+ 608:	80 83       	st	Z, r24
+		segChar(r2);
+ 60a:	80 91 7f 00 	lds	r24, 0x007F
+ 60e:	40 d0       	rcall	.+128    	; 0x690 <segChar>
+
+		// Если сейчас пол секунды мигаем точкой
+		if (halfsecond == 1 || showPoint)
+ 610:	80 91 7a 00 	lds	r24, 0x007A
+ 614:	81 30       	cpi	r24, 0x01	; 1
+ 616:	21 f0       	breq	.+8      	; 0x620 <__vector_9+0x68>
+ 618:	80 91 7e 00 	lds	r24, 0x007E
+ 61c:	88 23       	and	r24, r24
+ 61e:	d1 f0       	breq	.+52     	; 0x654 <__vector_9+0x9c>
+        {
+            segChar(POINT);
+ 620:	8a e0       	ldi	r24, 0x0A	; 10
+ 622:	36 d0       	rcall	.+108    	; 0x690 <segChar>
+ 624:	17 c0       	rjmp	.+46     	; 0x654 <__vector_9+0x9c>
+        }
+	}
+
+	else if (n_count == 2)
+ 626:	80 91 7b 00 	lds	r24, 0x007B
+ 62a:	82 30       	cpi	r24, 0x02	; 2
+ 62c:	41 f4       	brne	.+16     	; 0x63e <__vector_9+0x86>
+	{
+		PORTB = 0b00000100;
+ 62e:	e8 e3       	ldi	r30, 0x38	; 56
+ 630:	f0 e0       	ldi	r31, 0x00	; 0
+ 632:	84 e0       	ldi	r24, 0x04	; 4
+ 634:	80 83       	st	Z, r24
+		segChar(r3);
+ 636:	80 91 7c 00 	lds	r24, 0x007C
+ 63a:	2a d0       	rcall	.+84     	; 0x690 <segChar>
+ 63c:	0b c0       	rjmp	.+22     	; 0x654 <__vector_9+0x9c>
+	}
+
+	else if (n_count == 3)
+ 63e:	80 91 7b 00 	lds	r24, 0x007B
+ 642:	83 30       	cpi	r24, 0x03	; 3
+ 644:	39 f4       	brne	.+14     	; 0x654 <__vector_9+0x9c>
+	{
+		PORTB = 0b00001000;
+ 646:	e8 e3       	ldi	r30, 0x38	; 56
+ 648:	f0 e0       	ldi	r31, 0x00	; 0
+ 64a:	88 e0       	ldi	r24, 0x08	; 8
+ 64c:	80 83       	st	Z, r24
+		segChar(r4);
+ 64e:	80 91 7d 00 	lds	r24, 0x007D
+ 652:	1e d0       	rcall	.+60     	; 0x690 <segChar>
+	}
+
+	n_count++;
+ 654:	80 91 7b 00 	lds	r24, 0x007B
+ 658:	8f 5f       	subi	r24, 0xFF	; 255
+ 65a:	80 93 7b 00 	sts	0x007B, r24
+
+	if (n_count > 3)
+ 65e:	80 91 7b 00 	lds	r24, 0x007B
+ 662:	84 30       	cpi	r24, 0x04	; 4
+ 664:	10 f0       	brcs	.+4      	; 0x66a <__vector_9+0xb2>
+		n_count = 0;
+ 666:	10 92 7b 00 	sts	0x007B, r1
+}
+ 66a:	cf 91       	pop	r28
+ 66c:	df 91       	pop	r29
+ 66e:	ff 91       	pop	r31
+ 670:	ef 91       	pop	r30
+ 672:	bf 91       	pop	r27
+ 674:	af 91       	pop	r26
+ 676:	9f 91       	pop	r25
+ 678:	8f 91       	pop	r24
+ 67a:	7f 91       	pop	r23
+ 67c:	6f 91       	pop	r22
+ 67e:	5f 91       	pop	r21
+ 680:	4f 91       	pop	r20
+ 682:	3f 91       	pop	r19
+ 684:	2f 91       	pop	r18
+ 686:	0f 90       	pop	r0
+ 688:	0f be       	out	0x3f, r0	; 63
+ 68a:	0f 90       	pop	r0
+ 68c:	1f 90       	pop	r1
+ 68e:	18 95       	reti
+
+00000690 <segChar>:
+
+//----------------------------------------
+/* Вывод символов на 7seg дисплей */
+void segChar (uint8_t seg)
+{
+ 690:	df 93       	push	r29
+ 692:	cf 93       	push	r28
+ 694:	00 d0       	rcall	.+0      	; 0x696 <segChar+0x6>
+ 696:	0f 92       	push	r0
+ 698:	cd b7       	in	r28, 0x3d	; 61
+ 69a:	de b7       	in	r29, 0x3e	; 62
+ 69c:	89 83       	std	Y+1, r24	; 0x01
+	switch (seg)
+ 69e:	89 81       	ldd	r24, Y+1	; 0x01
+ 6a0:	28 2f       	mov	r18, r24
+ 6a2:	30 e0       	ldi	r19, 0x00	; 0
+ 6a4:	3b 83       	std	Y+3, r19	; 0x03
+ 6a6:	2a 83       	std	Y+2, r18	; 0x02
+ 6a8:	8a 81       	ldd	r24, Y+2	; 0x02
+ 6aa:	9b 81       	ldd	r25, Y+3	; 0x03
+ 6ac:	85 30       	cpi	r24, 0x05	; 5
+ 6ae:	91 05       	cpc	r25, r1
+ 6b0:	09 f4       	brne	.+2      	; 0x6b4 <segChar+0x24>
+ 6b2:	5b c0       	rjmp	.+182    	; 0x76a <segChar+0xda>
+ 6b4:	2a 81       	ldd	r18, Y+2	; 0x02
+ 6b6:	3b 81       	ldd	r19, Y+3	; 0x03
+ 6b8:	26 30       	cpi	r18, 0x06	; 6
+ 6ba:	31 05       	cpc	r19, r1
+ 6bc:	0c f5       	brge	.+66     	; 0x700 <segChar+0x70>
+ 6be:	8a 81       	ldd	r24, Y+2	; 0x02
+ 6c0:	9b 81       	ldd	r25, Y+3	; 0x03
+ 6c2:	82 30       	cpi	r24, 0x02	; 2
+ 6c4:	91 05       	cpc	r25, r1
+ 6c6:	09 f4       	brne	.+2      	; 0x6ca <segChar+0x3a>
+ 6c8:	41 c0       	rjmp	.+130    	; 0x74c <segChar+0xbc>
+ 6ca:	2a 81       	ldd	r18, Y+2	; 0x02
+ 6cc:	3b 81       	ldd	r19, Y+3	; 0x03
+ 6ce:	23 30       	cpi	r18, 0x03	; 3
+ 6d0:	31 05       	cpc	r19, r1
+ 6d2:	5c f4       	brge	.+22     	; 0x6ea <segChar+0x5a>
+ 6d4:	8a 81       	ldd	r24, Y+2	; 0x02
+ 6d6:	9b 81       	ldd	r25, Y+3	; 0x03
+ 6d8:	00 97       	sbiw	r24, 0x00	; 0
+ 6da:	09 f4       	brne	.+2      	; 0x6de <segChar+0x4e>
+ 6dc:	5f c0       	rjmp	.+190    	; 0x79c <segChar+0x10c>
+ 6de:	2a 81       	ldd	r18, Y+2	; 0x02
+ 6e0:	3b 81       	ldd	r19, Y+3	; 0x03
+ 6e2:	21 30       	cpi	r18, 0x01	; 1
+ 6e4:	31 05       	cpc	r19, r1
+ 6e6:	69 f1       	breq	.+90     	; 0x742 <segChar+0xb2>
+ 6e8:	65 c0       	rjmp	.+202    	; 0x7b4 <segChar+0x124>
+ 6ea:	8a 81       	ldd	r24, Y+2	; 0x02
+ 6ec:	9b 81       	ldd	r25, Y+3	; 0x03
+ 6ee:	83 30       	cpi	r24, 0x03	; 3
+ 6f0:	91 05       	cpc	r25, r1
+ 6f2:	89 f1       	breq	.+98     	; 0x756 <segChar+0xc6>
+ 6f4:	2a 81       	ldd	r18, Y+2	; 0x02
+ 6f6:	3b 81       	ldd	r19, Y+3	; 0x03
+ 6f8:	24 30       	cpi	r18, 0x04	; 4
+ 6fa:	31 05       	cpc	r19, r1
+ 6fc:	89 f1       	breq	.+98     	; 0x760 <segChar+0xd0>
+ 6fe:	5a c0       	rjmp	.+180    	; 0x7b4 <segChar+0x124>
+ 700:	8a 81       	ldd	r24, Y+2	; 0x02
+ 702:	9b 81       	ldd	r25, Y+3	; 0x03
+ 704:	88 30       	cpi	r24, 0x08	; 8
+ 706:	91 05       	cpc	r25, r1
+ 708:	09 f4       	brne	.+2      	; 0x70c <segChar+0x7c>
+ 70a:	3e c0       	rjmp	.+124    	; 0x788 <segChar+0xf8>
+ 70c:	2a 81       	ldd	r18, Y+2	; 0x02
+ 70e:	3b 81       	ldd	r19, Y+3	; 0x03
+ 710:	29 30       	cpi	r18, 0x09	; 9
+ 712:	31 05       	cpc	r19, r1
+ 714:	5c f4       	brge	.+22     	; 0x72c <segChar+0x9c>
+ 716:	8a 81       	ldd	r24, Y+2	; 0x02
+ 718:	9b 81       	ldd	r25, Y+3	; 0x03
+ 71a:	86 30       	cpi	r24, 0x06	; 6
+ 71c:	91 05       	cpc	r25, r1
+ 71e:	51 f1       	breq	.+84     	; 0x774 <segChar+0xe4>
+ 720:	2a 81       	ldd	r18, Y+2	; 0x02
+ 722:	3b 81       	ldd	r19, Y+3	; 0x03
+ 724:	27 30       	cpi	r18, 0x07	; 7
+ 726:	31 05       	cpc	r19, r1
+ 728:	51 f1       	breq	.+84     	; 0x77e <segChar+0xee>
+ 72a:	44 c0       	rjmp	.+136    	; 0x7b4 <segChar+0x124>
+ 72c:	8a 81       	ldd	r24, Y+2	; 0x02
+ 72e:	9b 81       	ldd	r25, Y+3	; 0x03
+ 730:	89 30       	cpi	r24, 0x09	; 9
+ 732:	91 05       	cpc	r25, r1
+ 734:	71 f1       	breq	.+92     	; 0x792 <segChar+0x102>
+ 736:	2a 81       	ldd	r18, Y+2	; 0x02
+ 738:	3b 81       	ldd	r19, Y+3	; 0x03
+ 73a:	2a 30       	cpi	r18, 0x0A	; 10
+ 73c:	31 05       	cpc	r19, r1
+ 73e:	99 f1       	breq	.+102    	; 0x7a6 <segChar+0x116>
+ 740:	39 c0       	rjmp	.+114    	; 0x7b4 <segChar+0x124>
+	{
+	case 1:
+		PORTD = ~0b00000110;    // "1"
+ 742:	e2 e3       	ldi	r30, 0x32	; 50
+ 744:	f0 e0       	ldi	r31, 0x00	; 0
+ 746:	89 ef       	ldi	r24, 0xF9	; 249
+ 748:	80 83       	st	Z, r24
+ 74a:	34 c0       	rjmp	.+104    	; 0x7b4 <segChar+0x124>
+		break;
+	case 2:
+		PORTD = ~0b01011011;    // "2"
+ 74c:	e2 e3       	ldi	r30, 0x32	; 50
+ 74e:	f0 e0       	ldi	r31, 0x00	; 0
+ 750:	84 ea       	ldi	r24, 0xA4	; 164
+ 752:	80 83       	st	Z, r24
+ 754:	2f c0       	rjmp	.+94     	; 0x7b4 <segChar+0x124>
+		break;
+	case 3:
+		PORTD = ~0b01001111;    // "3"
+ 756:	e2 e3       	ldi	r30, 0x32	; 50
+ 758:	f0 e0       	ldi	r31, 0x00	; 0
+ 75a:	80 eb       	ldi	r24, 0xB0	; 176
+ 75c:	80 83       	st	Z, r24
+ 75e:	2a c0       	rjmp	.+84     	; 0x7b4 <segChar+0x124>
+		break;
+	case 4:
+		PORTD = ~0b01100110;    // "4"
+ 760:	e2 e3       	ldi	r30, 0x32	; 50
+ 762:	f0 e0       	ldi	r31, 0x00	; 0
+ 764:	89 e9       	ldi	r24, 0x99	; 153
+ 766:	80 83       	st	Z, r24
+ 768:	25 c0       	rjmp	.+74     	; 0x7b4 <segChar+0x124>
+		break;
+	case 5:
+		PORTD = ~0b01101101;    // "5"
+ 76a:	e2 e3       	ldi	r30, 0x32	; 50
+ 76c:	f0 e0       	ldi	r31, 0x00	; 0
+ 76e:	82 e9       	ldi	r24, 0x92	; 146
+ 770:	80 83       	st	Z, r24
+ 772:	20 c0       	rjmp	.+64     	; 0x7b4 <segChar+0x124>
+		break;
+	case 6:
+		PORTD = ~0b01111101;    // "6"
+ 774:	e2 e3       	ldi	r30, 0x32	; 50
+ 776:	f0 e0       	ldi	r31, 0x00	; 0
+ 778:	82 e8       	ldi	r24, 0x82	; 130
+ 77a:	80 83       	st	Z, r24
+ 77c:	1b c0       	rjmp	.+54     	; 0x7b4 <segChar+0x124>
+		break;
+	case 7:
+		PORTD = ~0b00000111;    // "7"
+ 77e:	e2 e3       	ldi	r30, 0x32	; 50
+ 780:	f0 e0       	ldi	r31, 0x00	; 0
+ 782:	88 ef       	ldi	r24, 0xF8	; 248
+ 784:	80 83       	st	Z, r24
+ 786:	16 c0       	rjmp	.+44     	; 0x7b4 <segChar+0x124>
+		break;
+	case 8:
+		PORTD = ~0b01111111;    // "8"
+ 788:	e2 e3       	ldi	r30, 0x32	; 50
+ 78a:	f0 e0       	ldi	r31, 0x00	; 0
+ 78c:	80 e8       	ldi	r24, 0x80	; 128
+ 78e:	80 83       	st	Z, r24
+ 790:	11 c0       	rjmp	.+34     	; 0x7b4 <segChar+0x124>
+		break;
+	case 9:
+		PORTD = ~0b01101111;    // "9"
+ 792:	e2 e3       	ldi	r30, 0x32	; 50
+ 794:	f0 e0       	ldi	r31, 0x00	; 0
+ 796:	80 e9       	ldi	r24, 0x90	; 144
+ 798:	80 83       	st	Z, r24
+ 79a:	0c c0       	rjmp	.+24     	; 0x7b4 <segChar+0x124>
+		break;
+	case 0:
+		PORTD = ~0b00111111;    // "0"
+ 79c:	e2 e3       	ldi	r30, 0x32	; 50
+ 79e:	f0 e0       	ldi	r31, 0x00	; 0
+ 7a0:	80 ec       	ldi	r24, 0xC0	; 192
+ 7a2:	80 83       	st	Z, r24
+ 7a4:	07 c0       	rjmp	.+14     	; 0x7b4 <segChar+0x124>
+		break;
+	case 10:
+		PORTD &= ~(1 << PIN7);  // POINT "."
+ 7a6:	a2 e3       	ldi	r26, 0x32	; 50
+ 7a8:	b0 e0       	ldi	r27, 0x00	; 0
+ 7aa:	e2 e3       	ldi	r30, 0x32	; 50
+ 7ac:	f0 e0       	ldi	r31, 0x00	; 0
+ 7ae:	80 81       	ld	r24, Z
+ 7b0:	8f 77       	andi	r24, 0x7F	; 127
+ 7b2:	8c 93       	st	X, r24
+		break;
+	};
+}
+ 7b4:	0f 90       	pop	r0
+ 7b6:	0f 90       	pop	r0
+ 7b8:	0f 90       	pop	r0
+ 7ba:	cf 91       	pop	r28
+ 7bc:	df 91       	pop	r29
+ 7be:	08 95       	ret
+
+000007c0 <ledPrint>:
+
+//----------------------------------------
+/* Разделение минут и секунд на разряды */
+void ledPrint (uint8_t minutes, uint8_t seconds)
+{
+ 7c0:	df 93       	push	r29
+ 7c2:	cf 93       	push	r28
+ 7c4:	00 d0       	rcall	.+0      	; 0x7c6 <ledPrint+0x6>
+ 7c6:	cd b7       	in	r28, 0x3d	; 61
+ 7c8:	de b7       	in	r29, 0x3e	; 62
+ 7ca:	89 83       	std	Y+1, r24	; 0x01
+ 7cc:	6a 83       	std	Y+2, r22	; 0x02
+    //cli();
+	r1 = minutes / 10;
+ 7ce:	89 81       	ldd	r24, Y+1	; 0x01
+ 7d0:	9a e0       	ldi	r25, 0x0A	; 10
+ 7d2:	69 2f       	mov	r22, r25
+ 7d4:	24 d0       	rcall	.+72     	; 0x81e <__udivmodqi4>
+ 7d6:	80 93 81 00 	sts	0x0081, r24
+	r2 = minutes % 10;
+ 7da:	89 81       	ldd	r24, Y+1	; 0x01
+ 7dc:	9a e0       	ldi	r25, 0x0A	; 10
+ 7de:	69 2f       	mov	r22, r25
+ 7e0:	1e d0       	rcall	.+60     	; 0x81e <__udivmodqi4>
+ 7e2:	89 2f       	mov	r24, r25
+ 7e4:	80 93 7f 00 	sts	0x007F, r24
+	r3 = seconds / 10;
+ 7e8:	8a 81       	ldd	r24, Y+2	; 0x02
+ 7ea:	9a e0       	ldi	r25, 0x0A	; 10
+ 7ec:	69 2f       	mov	r22, r25
+ 7ee:	17 d0       	rcall	.+46     	; 0x81e <__udivmodqi4>
+ 7f0:	80 93 7c 00 	sts	0x007C, r24
+	r4 = seconds % 10;
+ 7f4:	8a 81       	ldd	r24, Y+2	; 0x02
+ 7f6:	9a e0       	ldi	r25, 0x0A	; 10
+ 7f8:	69 2f       	mov	r22, r25
+ 7fa:	11 d0       	rcall	.+34     	; 0x81e <__udivmodqi4>
+ 7fc:	89 2f       	mov	r24, r25
+ 7fe:	80 93 7d 00 	sts	0x007D, r24
+
+	update = FALSE;
+ 802:	10 92 80 00 	sts	0x0080, r1
+	//sei();
+}
+ 806:	0f 90       	pop	r0
+ 808:	0f 90       	pop	r0
+ 80a:	cf 91       	pop	r28
+ 80c:	df 91       	pop	r29
+ 80e:	08 95       	ret
+
+00000810 <readButtons>:
+
+
+//----------------------------------------
+/* Функция чтения состояния кнопок */
+void readButtons(void)
+{
+ 810:	df 93       	push	r29
+ 812:	cf 93       	push	r28
+ 814:	cd b7       	in	r28, 0x3d	; 61
+ 816:	de b7       	in	r29, 0x3e	; 62
+
+}
+ 818:	cf 91       	pop	r28
+ 81a:	df 91       	pop	r29
+ 81c:	08 95       	ret
+
+0000081e <__udivmodqi4>:
+ 81e:	99 1b       	sub	r25, r25
+ 820:	79 e0       	ldi	r23, 0x09	; 9
+ 822:	04 c0       	rjmp	.+8      	; 0x82c <__udivmodqi4_ep>
+
+00000824 <__udivmodqi4_loop>:
+ 824:	99 1f       	adc	r25, r25
+ 826:	96 17       	cp	r25, r22
+ 828:	08 f0       	brcs	.+2      	; 0x82c <__udivmodqi4_ep>
+ 82a:	96 1b       	sub	r25, r22
+
+0000082c <__udivmodqi4_ep>:
+ 82c:	88 1f       	adc	r24, r24
+ 82e:	7a 95       	dec	r23
+ 830:	c9 f7       	brne	.-14     	; 0x824 <__udivmodqi4_loop>
+ 832:	80 95       	com	r24
+ 834:	08 95       	ret
+
+00000836 <_exit>:
+ 836:	f8 94       	cli
+
+00000838 <__stop_program>:
+ 838:	ff cf       	rjmp	.-2      	; 0x838 <__stop_program>

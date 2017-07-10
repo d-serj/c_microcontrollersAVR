@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1496765953 source:d:\documents\projects\newproj\atmega8\fuse.c
+	<avr/io.h>
+
+1499714714 source:d:\documents\projects\newproj\atmega8\main.c
+	<avr/io.h>
+	<avr/interrupt.h>
+
+1398935542 source:d:\documents\projects\newproj\atmega8\buttons.c
+	"buttons.h"
+
+1499714822 d:\documents\projects\newproj\atmega8\buttons.h
+	<ioavr.h>
+	<intrinsics.h>
+	<avr/io.h>
+	<avr/interrupt.h>
+	<io.h>
+	<stdint.h>
+
