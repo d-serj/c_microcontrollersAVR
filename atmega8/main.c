@@ -7,6 +7,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "buttons.h"
 
 #define POINT       10
 #define TRUE        1
