@@ -7,7 +7,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "buttons.h"
+#include <util/atomic.h>
 
 #define POINT       10
 #define TRUE        1
@@ -17,22 +17,24 @@
 #define BUTT_RISE   3
 /* Делитель на 256 */
 #define TIMER1_STOP  TCCR1B &= ~(1 << CS12)
-#define TIMER1_START TCCR1B |= (1 << CS12)
+#define TIMER1_START TCCR1B |= (0 << CS10) | (0 << CS11) | (1 << CS12)
 /* ---------------- */
 
 //----------------------------------------
 void timer_init(void);
 void segChar (uint8_t seg);
-void ledPrint (uint8_t, uint8_t);
+void divIntoCategories (uint8_t, uint8_t);
 void readButtons (void);
 
 //----------------------------------------
+                             //0   1    2    3    4    5    6    7    8    9
+const uint8_t symbols[10] = {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};
 volatile uint8_t timerMinutes = 60;
 volatile uint8_t timerSeconds = 0;
 volatile uint8_t halfsecond   = 0;
-uint8_t r1, r2, r3, r4;                 // мм/сс
+uint8_t timeUnits[4];                   // мм/сс
 volatile uint8_t n_count = 0;           // счетчик в динамическую индикацию
-volatile uint8_t update;
+volatile uint8_t update = TRUE;
 volatile uint8_t showPoint = TRUE;
 
 //----------------------------------------
@@ -58,22 +60,34 @@ void main(void)
 	while (1)
 	{
         if (update == TRUE)
-            ledPrint(timerMinutes, timerSeconds);
+            divIntoCategories(timerMinutes, timerSeconds);
 
+        // Остановка если закончилось время
+        if (timerMinutes == 0 && timerSeconds == 0)
+        {
+            TIMER1_STOP;
+            showPoint = TRUE;
+        }
+
+        // Обновляем состояние кнопок
         BUT_Poll();
         buttPress = BUT_GetBut();
 
+        // Если нажат "СТАРТ"
         if (buttPress == BUTT_START)
         {
             buttState = BUT_GetBut();
+            // СТОП есди флаг старта "0"
             if (buttState == 1 && !isStart)
             {
                 TIMER1_STOP;
                 isStart = !isStart;
             }
 
+            // СТАРТ если флаг старта "1"
             else if (buttState == 1 && isStart)
             {
+                // Если это первый старт, то установим время на 60:00
                 if (firstStart)
                 {
                     timerMinutes = 60;
@@ -81,6 +95,7 @@ void main(void)
                     firstStart = FALSE;
                 }
 
+                // Стартуем таймер, инвертируем флаг старта в 0, выключаем "."
                 TIMER1_START;
                 isStart = !isStart;
                 showPoint = FALSE;
@@ -90,34 +105,44 @@ void main(void)
 
         if (buttPress == BUTT_RESET)
         {
-            //buttState = BUT_GetBut();
+            buttState = BUT_GetBut();
             if (buttState == 1)
             {
                 TIMER1_STOP;
                 timerMinutes = 0;
                 timerSeconds = 0;
-                ledPrint(timerMinutes, timerSeconds);
-                isStart = TRUE;
+                divIntoCategories(timerMinutes, timerSeconds);
+                isStart =    TRUE;
                 firstStart = TRUE;
-                showPoint = TRUE;
+                showPoint =  TRUE;
+            }
+
+        }
+
+        if (buttPress == BUTT_RISE)
+        {
+            buttState = BUT_GetBut();
+            if (buttState == 1)
+            {
+                firstStart = FALSE;
+                ++timerMinutes;
+                divIntoCategories(timerMinutes, timerSeconds);
             }
 
         }
 	}
 }
 
-//----------------------------------------
 
+//----------------------------------------
 void timer_init (void)
 {
 	// Устанавливаем режим СТС (сброс таймера по совпадению)
 	TCCR1B |= (1 << WGM12);
-	// Устанавливаем таймер 0
-	TCCR0 = 0b00000001;
-	// Устанавливаем делитель таймера 0 в /8
-	TCCR0 |= (1 << CS01);
 	// Устанавливаем бит разрешения прерывания по переполнению таймера 0
 	TIMSK |= (1 << TOIE0);
+	// Устанавливаем таймер 0 делитель /8
+	TCCR0 = (0 << CS00) | (1<<CS01) | (0 << CS02);
 	// Устанавливаем бит разрешения прерывания 1ого счетчика по совпадению с OCR1A(H и L)
 	TIMSK  |= (1 << OCIE1A);
 	// Записываем в регистр число для сравнения 111101000010010 (31250) (секунда) // !!!11110100001001 (15625) (Пол секунды)
@@ -129,11 +154,12 @@ void timer_init (void)
 	//TCCR1B |= (1 << CS11);
 }
 
+
 //----------------------------------------
 /* Считаем время */
 ISR(TIMER1_COMPA_vect)
 {
-	++halfsecond;
+    ++halfsecond;
 
 	if (halfsecond == 2)
 	{
@@ -143,32 +169,44 @@ ISR(TIMER1_COMPA_vect)
 			timerSeconds = 60;
 		}
 
-		if (timerMinutes == 0)
-			timerMinutes = 60;
-
-		else
-			--timerSeconds;
-
+		--timerSeconds;
 		halfsecond = 0;
+		showPoint  = FALSE;
 	}
 
-	update = TRUE;
+	else if (halfsecond == 1)
+        showPoint = TRUE;
+
+	update    = TRUE;
 }
+
 
 //----------------------------------------
 /* Динамическая индикация дисплея */
 ISR(TIMER0_OVF_vect)
 {
-	if (n_count == 0)
+	PORTB = 0x00;
+    PORTB |= _BV(n_count);
+    PORTD = ~timeUnits[n_count];
+	n_count;
+
+	if (++n_count > 3)
+        n_count = 0;
+
+    // Если разряд на 2й цифре и сейчас пол секунды или флаг показать точку
+    if (n_count == 2 && showPoint)
+        PORTD &= ~(1 << PIN7);  // POINT "."
+}
+/*	if (n_count == 0)
 	{
 		PORTB = 0b00000001;
-		segChar(r1);
+		segChar(timeUnits[0]);
 	}
 
 	else if (n_count == 1)
 	{
 		PORTB = 0b00000010;
-		segChar(r2);
+		segChar(timeUnits[1]);
 
 		// Если сейчас пол секунды мигаем точкой
 		if (halfsecond == 1 || showPoint)
@@ -180,23 +218,23 @@ ISR(TIMER0_OVF_vect)
 	else if (n_count == 2)
 	{
 		PORTB = 0b00000100;
-		segChar(r3);
+		segChar(timeUnits[2]);
 	}
 
 	else if (n_count == 3)
 	{
 		PORTB = 0b00001000;
-		segChar(r4);
+		segChar(timeUnits[3]);
 	}
 
 	n_count++;
 
 	if (n_count > 3)
-		n_count = 0;
-}
+		n_count = 0;*/
 
-//----------------------------------------
-/* Вывод символов на 7seg дисплей */
+
+/*
+ Вывод символов на 7seg дисплей
 void segChar (uint8_t seg)
 {
 	switch (seg)
@@ -235,28 +273,32 @@ void segChar (uint8_t seg)
 		PORTD &= ~(1 << PIN7);  // POINT "."
 		break;
 	};
-}
+}*/
+
 
 //----------------------------------------
 /* Разделение минут и секунд на разряды */
-void ledPrint (uint8_t minutes, uint8_t seconds)
+void divIntoCategories (uint8_t minutes, uint8_t seconds)
 {
-    cli();
-	r1 = minutes / 10;
-	r2 = minutes % 10;
-	r3 = seconds / 10;
-	r4 = seconds % 10;
+    uint8_t temp;
 
-	update = FALSE;
-	sei();
+    // Атомарная операция во избежание использования данных переменных в прерываниях
+    // во время операций над ними
+    ATOMIC_BLOCK(ATOMIC_FORCEON)
+    {
+        // minutes /10
+        temp = minutes / 10;
+        timeUnits[0] = symbols[temp];
+        // minutes /1
+        temp = minutes % 10;
+        timeUnits[1] = symbols[temp];
+        //seconds /10
+        temp = seconds / 10;
+        timeUnits[2] = symbols[temp];
+        // seconds /1
+        temp = seconds % 10;
+        timeUnits[3] = symbols[temp];
+
+        update = FALSE;
+    }
 }
-
-
-//----------------------------------------
-/* Функция чтения состояния кнопок */
-/*void readButtons(void)
-{
-
-} 
-*/
-
