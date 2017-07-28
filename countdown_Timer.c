@@ -33,8 +33,8 @@ void divIntoCategories (uint8_t, uint8_t);
 void readButtons (void);
 
 //----------------------------------------
-                             //0   1    2    3    4    5    6    7    8    9
-const uint8_t symbols[10] = {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};
+                             //0    1     2     3     4     5     6     7     8     9
+const uint8_t symbols[10] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f};
 volatile uint8_t timerMinutes = 60;
 volatile uint8_t timerSeconds = 0;
 volatile uint8_t update       = TRUE;
@@ -63,29 +63,29 @@ void main(void)
 
 	while (1)
 	{
-        if (update == TRUE)
-            divIntoCategories(timerMinutes, timerSeconds);
+        	if (update == TRUE)
+            		divIntoCategories(timerMinutes, timerSeconds);
 
-        // Остановка если закончилось время
-        if (timerMinutes == 0 && timerSeconds == 0)
-        {
-            TIMER1_STOP;
-            showPoint = TRUE;
-        }
+        	// Остановка если закончилось время
+        	if (timerMinutes == 0 && timerSeconds == 0)
+        	{
+            		TIMER1_STOP;
+            		showPoint = TRUE;
+        	}
 
-        // Обновляем состояние кнопок
-        BUT_Poll();
-        buttPress = BUT_GetBut();
+        	// Обновляем состояние кнопок
+        	BUT_Poll();
+        	buttPress = BUT_GetBut();
 
-        // Если нажат "СТАРТ"
-        if (buttPress == BUTT_START)
-        {
-            buttState = BUT_GetBut();
-            // СТОП есди флаг старта "0"
-            if (buttState == 1 && !isStart)
+        	// Если нажат "СТАРТ"
+        	if (buttPress == BUTT_START)
+        	{
+            	buttState = BUT_GetBut();
+            	// СТОП есди флаг старта "0"
+			if (buttState == 1 && !isStart)
             {
-                TIMER1_STOP;
-                isStart = !isStart;
+            	TIMER1_STOP;
+            	isStart = !isStart;
             }
 
             // СТАРТ если флаг старта "1"
@@ -206,9 +206,9 @@ ISR(TIMER0_OVF_vect)
         PORTB |= _BV(n_count);
         // Отображаем цифру текущего разряда
         PORTD = ~timeUnits[n_count];
-        ++n_count;
+        //++n_count;
 
-        if (n_count > 3)
+        if (++n_count > 3)
             n_count = 0;
     }
 
@@ -227,24 +227,18 @@ ISR(TIMER0_OVF_vect)
 /* Разделение минут и секунд на разряды */
 void divIntoCategories (uint8_t minutes, uint8_t seconds)
 {
-    uint8_t temp;
-
     // Атомарная операция во избежание использования данных переменных в прерываниях
     // во время операций над ними
     ATOMIC_BLOCK(ATOMIC_FORCEON)
     {
         // minutes /10
-        temp = minutes / 10;
-        timeUnits[0] = symbols[temp];
+        timeUnits[0] = symbols[minutes / 10];
         // minutes /1
-        temp = minutes % 10;
-        timeUnits[1] = symbols[temp];
+        timeUnits[1] = symbols[minutes % 10];
         //seconds /10
-        temp = seconds / 10;
-        timeUnits[2] = symbols[temp];
+        timeUnits[2] = symbols[seconds / 10];
         // seconds /1
-        temp = seconds % 10;
-        timeUnits[3] = symbols[temp];
+        timeUnits[3] = symbols[seconds % 10];
 
         update = FALSE;
     }
