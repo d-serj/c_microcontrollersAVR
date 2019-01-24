@@ -22,8 +22,8 @@
 #define BUTT_RISE   3
 //----------------------------------------
 /* Делитель на 256 */
-#define TIMER1_STOP  TCCR1B &= ~(1 << CS12)
-#define TIMER1_START TCCR1B |= (0 << CS10) | (0 << CS11) | (1 << CS12)
+#define TIMER1_STOP  (TCCR1B &= ~(1 << CS12))
+#define TIMER1_START (TCCR1B |= (0 << CS10) | (0 << CS11) | (1 << CS12))
 /* ---------------- */
 
 //----------------------------------------
